@@ -36,7 +36,7 @@ Each of the components of this project has separate APIs, depending on how they 
 * /temperature - GET
 * /pressure - GET
 * /light - GET
-* /light - POST 
+* /leds - POST 
 
 ### sensehat
 
