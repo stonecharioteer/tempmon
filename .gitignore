@@ -54,3 +54,4 @@ dkms.conf
 
 *.pyc
 .ipynb_checkpoints
+instance/
