@@ -24,7 +24,7 @@ def temperature():
     """returns the temperature."""
     global hat
     data = {
-        "temperature": max([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - os.environ.get("correction", 0)
+        "temperature": max([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - float(os.environ.get("correction", 0))
     }
     return jsonify(data)
 
