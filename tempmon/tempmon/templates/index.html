@@ -4,7 +4,7 @@
 <div class="container">
     <div class="tile is-ancestor">
         <div class="tile is-parent is-vertical" id="display">
-            <div class="tile"></div>
+            <div class="tile is-child"></div>
             <div class="tile is-child box">
                 <p class="title">NodeMCUs</p>
                 <b-field grouped group-multiline>
@@ -30,7 +30,24 @@
                     </div>
                 </b-field>
             </div>
-            <div class="tile"></div>
+            <div class="tile is-child box">
+                <p class="title">Enviro PHats</p>
+                <b-field grouped group-multiline>
+                    <div class="control" v-for="host in data['enviropis']">
+                        <b-taglist attached>
+                            <b-tag type="is-warning">{{ '{{ host.id }}' }}</b-tag>
+                            <b-tag type="is-danger">
+                                <i class="fa fa-thermometer-full fa-fw"></i>{{ '{{ host.temperature }}' }} °C</b-tag>
+                            <b-tag type="is-link">
+                                <i class="fa fa-cloud fa-fw"></i>{{ '{{ host.light }}' }} </b-tag>
+                            <b-tag type="is-link">
+                                <i class="fa fa-cloud fa-fw"></i>{{ '{{ host.rgb }}' }}</b-tag>
+                            <b-tag type="is-success">{{ '{{ host.pressure }}' }} millibar</b-tag>
+                        </b-taglist>
+                    </div>
+                </b-field>
+            </div>
+            <div class="tile is-child"></div>
         </div>
     </div>
 </div>
