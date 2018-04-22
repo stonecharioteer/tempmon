@@ -25,7 +25,7 @@ def get_all_components():
     #TODO: Figure out a different way to get the current domain IP prefix.
     # scanner.scan(hosts="192.168.1.0/24", arguments="-sn")
     # hosts = [(x, scanner[x]["hostnames"][0]["name"]) for x in scanner.all_hosts()]
-    hosts = [("192.168.1.106", "1"), ("192.168.1.107", "2") ]
+    hosts = [("192.168.1.106", "1"), ("192.168.1.107", "2"), ("192.168.1.108","3")]
     # After identifying all hosts on network, identify valid ones.
     tempmon_hosts = []
     for host in hosts:
