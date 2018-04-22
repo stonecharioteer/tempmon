@@ -1,4 +1,6 @@
-from flask import jsonify
+from __future__ import division
+
+from flask import jsonify, request
 
 from sensehat import SenseHat
 
@@ -20,7 +22,7 @@ def whoami():
 def temperature():
     """returns the temperature."""
     data = {
-        "temperature": hat.get_temperature()
+        "temperature": min([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - 4.0
     }
     return jsonify(data)
 
@@ -43,7 +45,12 @@ def pressure():
 @app.route("/show_message", methods=["POST"])
 def show_message():
     """Shows a message."""
-
+    message = request.data["text_string"]
+    scroll_speed = request.data["scroll_speed"]
+    text_colour = request.data["text_colour"]
+    back_color = request.data["back_colour"]
+    hat.show_message(message)
+    hat.clear()
     data = {
         "success": True
         }
