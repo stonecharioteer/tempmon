@@ -25,7 +25,13 @@ def get_all_components():
     #TODO: Figure out a different way to get the current domain IP prefix.
     # scanner.scan(hosts="192.168.1.0/24", arguments="-sn")
     # hosts = [(x, scanner[x]["hostnames"][0]["name"]) for x in scanner.all_hosts()]
-    hosts = [("192.168.1.106", "1"), ("192.168.1.107", "2"), ("192.168.1.108","3")]
+    hosts = [
+                ("192.168.1.106", "nodemcu1"), 
+                ("192.168.1.107", "nodemcu2"), 
+                ("192.168.1.108", "nodemcu3"),
+                ("192.168.1.109", "nodemcu4"),
+                ("192.168.1.110", "nodemcu5")
+        ]
     # After identifying all hosts on network, identify valid ones.
     tempmon_hosts = []
     for host in hosts:
@@ -40,8 +46,13 @@ def get_all_components():
                 host_type = response["type"]
                 host_id = response["id"]
                 tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
+            else:
+                print("{} : {}".format(ip, who_request.status_code))
+                print("{} : {}".format(ip, who_request.reason))
+                print("{} : {}".format(ip, who_request.text))
+                
         except requests.exceptions.RequestException:
-            pass 
+            pass
     return tempmon_hosts
 
 if __name__ == "__main__":

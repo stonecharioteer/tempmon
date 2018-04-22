@@ -1,0 +1,132 @@
+{# _layout.html_ #}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tempmon{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='libs/buefy/buefy.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}"> 
+    
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+
+<body>
+    {% block navbar %}
+    <!-- Navigation section -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <img src="{{ url_for('static', filename='img/new_header.png') }}" width="80" style="max-height: 100px">
+        <div class="navbar-brand">
+            <!-- style="margin-left: 2%" -->
+            <a class="navbar-item" href="/">
+                <b>GAI Temperature Monitor</b>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-end" style="margin-right: 2%">
+    
+                <a class="navbar-item is-dark" href="/">
+                    <i class="fa fa-thermometer-full fa-fw"></i>Home</a>
+                <a class="navbar-item" href="/sensehatpi">
+                    <i class="fa fa-tasks fa-fw"></i>Sense Hat</a>
+                <a class="navbar-item" href="/admin">
+                    <i class="fa  fa-terminal fa-fw"></i>Administration</a>
+                <a class="navbar-item" href="/enviropi">
+                    <i class="fa  fa-square fa-fw"></i>Enviro PHat</a>
+            </div>
+        </div>
+    </nav>
+    <!-- End nav -->
+    {% endblock %}
+    <div class="container" id="body_container">
+        {% block body %} {% endblock %}
+    </div>
+    
+
+    {% block footer %}
+    <footer class="footer">
+        <div class="columns">
+            <div class="column is-one-fifth has-text-black is-hidden-mobile">
+                <p class="subtitle is-h1" style="color: white">Stack</p>
+                <div class="columns is-centered is-multiline">
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="https://www.raspberrypi.org">
+                            <img src="{{ url_for('static', filename='img/rpi.png')}}" width="50px">
+                        </a>
+                    </div>
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="https://www.espressif.com/en/products/hardware/esp8266ex/overview">
+                            <img src="{{ url_for('static', filename='img/esp8266.png')}}" width="100px">
+                        </a>
+                    </div>
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="https://www.arduino.cc/">
+                            <img src="{{ url_for('static', filename='img/arduino.png')}}" width="50px">
+                        </a>
+                    </div>
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="http://gunicorn.org/">
+                            <img src="{{ url_for('static', filename='img/Gunicorn.png')}}">
+                        </a>
+                    </div>
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="http://flask.pocoo.org/">
+                            <img src="{{ url_for('static', filename='img/flask.png')}}">
+                        </a>
+                    </div>
+    
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="https://buefy.github.io">
+                            <img src="{{ url_for('static', filename='img/buefy.png')}}">
+                        </a>
+                    </div>
+                    <div class="column is-narrow is-half">
+                        <a class="button is-dark is-outlined is-inverted" style="border: 0px" href="http://www.python.org/">
+                            <img src="{{ url_for('static', filename='img/python_powered.png')}}" width="50px">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="column has-text-centered is-hidden-mobile">
+                <p>
+                    <strong style="color: white">GKN Aerospace India Temperature Monitoring Interface</strong>.</p>
+                <p>Contact
+                    <a href="mailto:vinay.keerthi@gkndriveline.com">Vinay Keerthi</a> if you'd like access to the code.</p>
+            </div>
+            <div class="column is-one-fifth">
+                <p class="subtitle is-h1" style="color: white">Links</p>
+                <p>
+                    <a class="button is-outlined is-black is-inverted is-small" style="border:0px" href="/">
+                        <i class="fa fa-thermometer-full fa-fw"></i>Home</a>
+                </p>
+                <p>  
+                    <a class="button is-outlined is-black is-inverted is-small" style="border:0px" href="/sensehatpi">
+                        <i class="fa fa-tasks fa-fw"></i>Sense Hat</a>
+                </p>
+                <p>
+                    <a class="button is-outlined is-black is-inverted is-small" style="border:0px" href="/admin">
+                        <i class="fa fa-terminal fa-fw"></i>Administration</a>
+                </p>
+                <p>
+                    <a class="button is-outlined is-black is-inverted is-small" style="border:0px" href="/enviropi">
+                        <i class="fa  fa-square fa-fw"></i>Enviro PHat</a>
+                </p>
+            </div>
+        </div>
+    
+    </footer>
+    {% endblock %}
+
+    <script src="{{ url_for('static', filename='libs/axios/axios.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/lodash/lodash.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/vue.js-2.5.13/vue.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='libs/buefy/buefy.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+{# _index.html_ #} 
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+    <div class="tile is-ancestor">
+        <div class="tile is-parent is-vertical">
+            <div class="tile"></div>
+            <div class="tile is-child box" id="nodemcus">
+                Node MCU Values go here!
+            </div>
+            <div class="tile"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    Vue.use(Buefy.default, { defaultIconPack: 'fa' })
+    var configuration = {
+        data() {
+            return {
+                data: []
+            }
+        },
+        methods: {
+            loadAsyncData() {
+                var vm = this;
+                vm.loading = true;
+                axios.get("/components_data")
+                .then(({ data }) => {
+                    this.data = []
+                    for (var i=0; i<data.Length; i++) {
+                        var ip = data[i]["ip"]
+                        var host_type = data[i]["type"]
+                        if (host_type == "nodemcu" ) {
+                            axios.get("http://"+ip+"/temperature")
+                                .then(({tempdata })=> {
+                                    console.log(tempdata["temperature"])
+                                })
+                        }
+                    }
+                })
+                vm.loading = false;
+            }
+        },
+        beforeMount() {
+            this.loadAsyncData()
+        }
+    }
+    const app = new Vue(configuration);
+    app.$mount("#nodemcus")
+</script>
+{% endblock %}
