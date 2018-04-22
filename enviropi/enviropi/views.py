@@ -10,7 +10,7 @@ from .enviropi import app
 def whoami():
     """whoami"""
     data = {
-        "id": os.environ.get("ENVIROPIID","1"), 
+        "id": os.environ.get("ENVIROPIID", "1"), 
         "type": "enviropi"
         }
     return jsonify(data)
@@ -34,7 +34,7 @@ def pressure():
     return jsonify(data)
 
 @app.route("/light")
-def get_light():
+def get_light(): 
     """light"""
     global light
     data = {

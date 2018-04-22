@@ -68,6 +68,7 @@ def components_data():
 
         if host_type == "enviropi":
             response = requests.get("http://{}/humidity".format(ip))
+            print(response)
             data["light"] = response.json()["light"]
             data["rgb"] = response.json()["rgb"]
         
