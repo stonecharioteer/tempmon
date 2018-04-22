@@ -2,6 +2,7 @@
 from __future__ import print_function, division
 import os
 import nmap
+import requests
 
 def get_all_components():
     """Returns a list of dictionaries with hosts running the tempmon API infrastructure.
