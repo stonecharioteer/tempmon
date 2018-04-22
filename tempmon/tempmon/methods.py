@@ -31,7 +31,7 @@ def get_all_components():
     for host in hosts:
         ip = host[0]
         hostname = host[1]
-        who_request = requests.get("http://{}/whoami".format(host))
+        who_request = requests.get("http://{}/whoami".format(ip))
         # check if response is valid.
         # If it is, then read the response and identify the host.
         if who_request == 200:
