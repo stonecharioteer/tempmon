@@ -22,6 +22,7 @@ def whoami():
 @app.route("/temperature")
 def temperature():
     """returns the temperature."""
+    global hat
     data = {
         "temperature": min([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - 4.0
     }
@@ -30,6 +31,7 @@ def temperature():
 @app.route("/humidity")
 def humidity():
     """returns humidity"""
+    global hat
     data = {
         "humidity": hat.get_humidity()
     }
@@ -38,6 +40,7 @@ def humidity():
 @app.route("/pressure")
 def pressure():
     """Returns pressure."""
+    global hat
     data = {
         "pressure": hat.get_pressure()
     }
@@ -46,6 +49,7 @@ def pressure():
 @app.route("/show_message", methods=["POST"])
 def show_message():
     """Shows a message."""
+    global hat
     message = request.data["text_string"]
     scroll_speed = request.data["scroll_speed"]
     text_colour = request.data["text_colour"]
