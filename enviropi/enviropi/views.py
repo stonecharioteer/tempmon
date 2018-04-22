@@ -29,7 +29,7 @@ def pressure():
     """Pressure"""
     global weather
     data = {
-        "pressure": weather.pressure()
+        "pressure": weather.pressure() / 100.00
     }
     return jsonify(data)
 
