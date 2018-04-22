@@ -31,7 +31,7 @@ def get_all_components():
     for host in hosts:
         ip = host[0]
         hostname = host[1]
-        print("Scanning {}".format(ip))
+        # print("Scanning {}".format(ip))
         try:
             who_request = requests.get("http://{}/whoami".format(ip), timeout=0.1)
             # check if response is valid.
@@ -42,6 +42,7 @@ def get_all_components():
                     host_type = response["type"]
                     host_id = response["id"]
                     tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
+                    print("Detected: {} {} {}".format(ip, host_type, host_id))
                 except ValueError:
                     pass
             else:
@@ -51,6 +52,3 @@ def get_all_components():
         except requests.exceptions.RequestException:
             pass
     return tempmon_hosts
-
-if __name__ == "__main__":
-    print(get_all_components())

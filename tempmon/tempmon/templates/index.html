@@ -3,10 +3,32 @@
 {% block body %}
 <div class="container">
     <div class="tile is-ancestor">
-        <div class="tile is-parent is-vertical">
+        <div class="tile is-parent is-vertical" id="display">
             <div class="tile"></div>
-            <div class="tile is-child box" id="nodemcus">
-                Node MCU Values go here!
+            <div class="tile is-child box">
+                <p class="title">NodeMCUs</p>
+                <b-field grouped group-multiline>
+                    <div class="control" v-for="host in data['nodemcus']">
+                        <b-taglist attached>
+                            <b-tag type="is-warning">{{ '{{ host.id }}' }}</b-tag>
+                            <b-tag type="is-danger">{{ '{{ host.temperature }}' }} °C</b-tag>
+                            <b-tag type="is-primary">{{ '{{ host.humidity }}' }} %</b-tag>
+                        </b-taglist>
+                    </div>
+                </b-field>
+            </div>
+            <div class="tile is-child box">
+                <p class="title">Sense Hats</p>
+                <b-field grouped group-multiline>
+                    <div class="control" v-for="host in data['sensehatpis']">
+                        <b-taglist attached>
+                            <b-tag type="is-warning">{{ '{{ host.id }}' }}</b-tag>
+                            <b-tag type="is-danger">{{ '{{ host.temperature }}' }} °C</b-tag>
+                            <b-tag type="is-primary">{{ '{{ host.humidity }}' }} %</b-tag>
+                            <b-tag type="is-success">{{ '{{ host.pressure }}' }} millibar</b-tag>
+                        </b-taglist>
+                    </div>
+                </b-field>
             </div>
             <div class="tile"></div>
         </div>
@@ -19,7 +41,11 @@
     var configuration = {
         data() {
             return {
-                data: []
+                data: {
+                    nodemcus: [],
+                    sensehatpis: [],
+                    enviropis: []
+                }
             }
         },
         methods: {
@@ -27,26 +53,76 @@
                 var vm = this;
                 vm.loading = true;
                 axios.get("/components_data")
-                .then(({ data }) => {
+                .then(({ componentsdata }) => {
                     this.data = []
-                    for (var i=0; i<data.length; i++) {
-                        var ip = data[i]["ip"]
-                        var host_type = data[i]["type"]
-                        var id = data[i]["id"]
+                    var nodemcus = []
+                    var sensehatpis = []
+                    var enviropis = []
+                    var ip;
+                    var host_type;
+                    var id;
+                    var host_data;
+                    for (var i=0; i<componentsdata.length; i++) {
+                        ip = componentsdata[i]["ip"];
+                        host_type =componentsdata[i]["type"];
+                        id = componentsdata[i]["id"];
+                        host_data = {};
+                        host_data = {
+                            "ip": ip,
+                            "id": id
+                        }
+                        var params = [
+                            `ip=${ip}`,
+                            `type=${host_type}`
+                        ].join("&");
+
                         if (host_type == "nodemcu" ) {
-                            var params = [
-                                `ip=${ip}`,
-                                `type=${host_type}`
-                            ].join("&");
                             axios.get(`/temperature?${params}`)
                                 .then( function(tempdata) {
-                                    console.log(tempdata.data["temperature"]);
+                                    host_data["temperature"] = tempdata.data["temperature"];
+                                    axios.get(`/humidity?${params}`)
+                                        .then(function (humdata) {
+                                            host_data["humidity"] = humdata.data["humidity"];
+                                            nodemcus.push(host_data);
+                                        })
                                 })
-                            axios.get(`/humidity?${params}`)
-                                .then(function(humdata) {
-                                    console.log(humdata.data["humidity"]);
+                        } else if (host_type == "sensehatpi") {
+                            axios.get(`/temperature?${params}`)
+                                .then(function (tempdata) {
+                                    host_data["temperature"] = tempdata.data["temperature"]
+                                    axios.get(`/humidity?${params}`)
+                                        .then(function (humdata) {
+                                            host_data["humidity"] = humdata.data["humidity"]
+                                            axios.get(`/pressure?${params}`)
+                                                .then(function (pressuredata) {
+                                                    host_data["pressure"] = pressuredata.data["pressure"]
+                                                    sensehatpis.push(host_data)
+                                                })
+                                        })
                                 })
+                        } else if (host_type == "enviropi") {
+                            axios.get(`/temperature?${params}`)
+                                .then(function (tempdata) {
+                                    host_data["temperature"] = tempdata.data["temperature"]
+                                    axios.get(`/light?${params}`)
+                                        .then(function (lightdata) {
+                                            host_data["light"] = lightdata.data["light"]
+                                            host_data["rgb"] = lightdata.data["rgb"]
+                                            axios.get(`/pressure?${params}`)
+                                                .then(function (pressuredata) {
+                                                    host_data["pressure"] = pressuredata.data["pressure"]
+                                                    enviropis.push(host_data)
+                                                })
+                                        })
+                                })
+                            
+                            
                         }
+                    }
+                    vm.data = {
+                        "nodemcus": nodemcus,
+                        "sensehatpis": sensehatpis,
+                        "enviropis": enviropis
                     }
                 })
                 vm.loading = false;

@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
 
+import os
 import json
 import requests
 
-from flask import jsonify, render_template, redirect, request
+from flask import jsonify, render_template, redirect, request, url_for, send_from_directory
 from expiringdict import ExpiringDict
 
 from .tempmon import app
@@ -11,7 +12,7 @@ from .methods import get_all_components
 
 hosts_cache = ExpiringDict(max_len=100, max_age_seconds=10*60)
 hosts_cache["hosts"] = get_all_components()
-
+id_mappings = {}
 
 @app.route("/")
 def index():
@@ -55,7 +56,6 @@ def get_temperature():
     response = requests.get("http://{}/temperature".format(ip))
 
     data = response.json()
-    print(data)
     return jsonify(data)
 
 
@@ -65,5 +65,28 @@ def get_humidity():
     host_type = request.args.get("type")
     response = requests.get("http://{}/humidity".format(ip))
     data = response.json()
-    print(data)
     return jsonify(data)
+
+
+@app.route("/pressure")
+def get_pressure():
+    ip = request.args.get("ip")
+    host_type = request.args.get("type")
+    response = requests.get("http://{}/pressure".format(ip))
+    data = response.json()
+    return jsonify(data)
+
+
+@app.route("/light")
+def get_light():
+    ip = request.args.get("ip")
+    host_type = request.args.get("type")
+    response = requests.get("http://{}/light".format(ip))
+    data = response.json()
+    return jsonify(data)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
