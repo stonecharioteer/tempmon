@@ -14,7 +14,7 @@ hat = SenseHat()
 def whoami():
     """Returns the identity of the chip it's running on."""
     data = {
-        "id": os.environ["SENSEHATID"],
+        "id": os.environ.get("SENSEHATID", "1"),
         "type": "sensehatpi"
     }
     return jsonify(data)
@@ -24,7 +24,7 @@ def temperature():
     """returns the temperature."""
     global hat
     data = {
-        "temperature": min([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - 4.0
+        "temperature": max([hat.get_temperature_from_humidity(), hat.get_temperature_from_pressure()]) - os.environ.get("correction", 0)
     }
     return jsonify(data)
 
