@@ -1,5 +1,7 @@
-from flask import jsonify
+# -*- coding: UTF-8 -*-
 
+import os
+from flask import jsonify, request
 from envirophat import light, weather, leds
 
 from .enviropi import app
@@ -8,7 +10,7 @@ from .enviropi import app
 def whoami():
     """whoami"""
     data = {
-        "id": "IDHERE", 
+        "id": os.environ.get("ENVIROPIID","1"), 
         "type": "enviropi"
         }
     return jsonify(data)
@@ -17,7 +19,7 @@ def whoami():
 def temperature():
     """Temperature"""
     data = {
-        "temperature": weather.temperature()
+        "temperature": weather.temperature() - float(os.environ.get("correction", 0))
     }
     return jsonify(data)
 
@@ -41,6 +43,9 @@ def light():
 @app.route("/leds", methods=["POST"])
 def leds():
     """leds."""
-    leds.on()
-    leds.off()
+    state = request.args["state"]
+    if state == "on":
+        leds.on()
+    else:
+        leds.off()
     return jsonify({"success": True})
