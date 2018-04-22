@@ -9,7 +9,13 @@ def get_all_components():
 
     Tempmon components all run a REST API on port 80, and respond to /whoami.
 
-    This allows tempmon to operate in a network without static IPs."""
+    This allows tempmon to operate in a network without static IPs.
+    
+    Returns
+    -----------
+    
+    
+    A list of dictionaries with the host ips, types and ids."""
 
     scanner = nmap.PortScanner()
     #TODO: Figure out a different way to get the current domain IP prefix.
@@ -29,5 +35,5 @@ def get_all_components():
             host_type = response["type"]
             host_id = response["id"]
             tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
-
+ 
     return tempmon_hosts
