@@ -53,8 +53,8 @@
                 var vm = this;
                 vm.loading = true;
                 axios.get("/components_data")
-                .then(({ componentsdata }) => {
-                    this.data = []
+                .then(({ data }) => {
+                    vm.data = []
                     var nodemcus = []
                     var sensehatpis = []
                     var enviropis = []
@@ -62,10 +62,10 @@
                     var host_type;
                     var id;
                     var host_data;
-                    for (var i=0; i<componentsdata.length; i++) {
-                        ip = componentsdata[i]["ip"];
-                        host_type =componentsdata[i]["type"];
-                        id = componentsdata[i]["id"];
+                    for (var i=0; i<data.length; i++) {
+                        ip = data[i]["ip"];
+                        host_type = data[i]["type"];
+                        id = data[i]["id"];
                         host_data = {};
                         host_data = {
                             "ip": ip,
