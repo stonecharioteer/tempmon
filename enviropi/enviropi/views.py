@@ -34,7 +34,7 @@ def pressure():
     return jsonify(data)
 
 @app.route("/light")
-def light():
+def get_light():
     """light"""
     global light
     data = {
@@ -44,7 +44,7 @@ def light():
     return jsonify(data)
 
 @app.route("/leds", methods=["POST"])
-def leds():
+def get_leds():
     """leds."""
     global leds
     state = request.args["state"]
