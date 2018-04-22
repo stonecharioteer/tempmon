@@ -2,7 +2,7 @@ from __future__ import division
 
 from flask import jsonify, request
 
-from sensehat import SenseHat
+from sense_hat import SenseHat
 
 from .sensehatpi import app
 
