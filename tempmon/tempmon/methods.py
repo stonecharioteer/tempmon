@@ -25,32 +25,29 @@ def get_all_components():
     #TODO: Figure out a different way to get the current domain IP prefix.
     # scanner.scan(hosts="192.168.1.0/24", arguments="-sn")
     # hosts = [(x, scanner[x]["hostnames"][0]["name"]) for x in scanner.all_hosts()]
-    hosts = [
-                ("192.168.1.106", "nodemcu1"), 
-                ("192.168.1.107", "nodemcu2"), 
-                ("192.168.1.108", "nodemcu3"),
-                ("192.168.1.109", "nodemcu4"),
-                ("192.168.1.110", "nodemcu5")
-        ]
+    hosts = [ ("192.168.1.{}".format(x), "component") for x in range(1, 256) ]
     # After identifying all hosts on network, identify valid ones.
     tempmon_hosts = []
     for host in hosts:
         ip = host[0]
         hostname = host[1]
+        print("Scanning {}".format(ip))
         try:
-            who_request = requests.get("http://{}/whoami".format(ip))
+            who_request = requests.get("http://{}/whoami".format(ip), timeout=0.1)
             # check if response is valid.
             # If it is, then read the response and identify the host.
             if who_request.status_code == 200:
-                response = who_request.json()
-                host_type = response["type"]
-                host_id = response["id"]
-                tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
+                try:
+                    response = who_request.json()
+                    host_type = response["type"]
+                    host_id = response["id"]
+                    tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
+                except ValueError:
+                    pass
             else:
                 print("{} : {}".format(ip, who_request.status_code))
                 print("{} : {}".format(ip, who_request.reason))
                 print("{} : {}".format(ip, who_request.text))
-                
         except requests.exceptions.RequestException:
             pass
     return tempmon_hosts

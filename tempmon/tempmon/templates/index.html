@@ -29,13 +29,22 @@
                 axios.get("/components_data")
                 .then(({ data }) => {
                     this.data = []
-                    for (var i=0; i<data.Length; i++) {
+                    for (var i=0; i<data.length; i++) {
                         var ip = data[i]["ip"]
                         var host_type = data[i]["type"]
+                        var id = data[i]["id"]
                         if (host_type == "nodemcu" ) {
-                            axios.get("http://"+ip+"/temperature")
-                                .then(({tempdata })=> {
-                                    console.log(tempdata["temperature"])
+                            var params = [
+                                `ip=${ip}`,
+                                `type=${host_type}`
+                            ].join("&");
+                            axios.get(`/temperature?${params}`)
+                                .then( function(tempdata) {
+                                    console.log(tempdata.data["temperature"]);
+                                })
+                            axios.get(`/humidity?${params}`)
+                                .then(function(humdata) {
+                                    console.log(humdata.data["humidity"]);
                                 })
                         }
                     }
