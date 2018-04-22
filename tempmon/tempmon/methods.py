@@ -22,7 +22,7 @@ def get_all_components():
     scanner = nmap.PortScanner()
     #TODO: Figure out a different way to get the current domain IP prefix.
     scanner.scan(hosts="192.168.1.0/24", arguments="-sn")
-    hosts = [(x, scanner[x]["hostnames"]["name"]) for x in scanner.all_hosts()]
+    hosts = [(x, scanner[x]["hostnames"][0]["name"]) for x in scanner.all_hosts()]
 
     # After identifying all hosts on network, identify valid ones.
     tempmon_hosts = []
