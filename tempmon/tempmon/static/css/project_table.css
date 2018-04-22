@@ -1,0 +1,12 @@
+.dynatable-sort-header {
+    color: black;
+}
+
+.dynatable-head {
+    min-width: 150px;
+    border: 1px solid black;
+}
+
+.dynatable-sort-header:hover {
+    color: blue;
+}
