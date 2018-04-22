@@ -18,6 +18,7 @@ def whoami():
 @app.route("/temperature")
 def temperature():
     """Temperature"""
+    global weather
     data = {
         "temperature": weather.temperature() - float(os.environ.get("correction", 0))
     }
@@ -26,6 +27,7 @@ def temperature():
 @app.route("/pressure")
 def pressure():
     """Pressure"""
+    global weather
     data = {
         "pressure": weather.pressure()
     }
@@ -34,6 +36,7 @@ def pressure():
 @app.route("/light")
 def light():
     """light"""
+    global light
     data = {
         "light": light.light(),
         "rgb": light.rgb()
@@ -43,6 +46,7 @@ def light():
 @app.route("/leds", methods=["POST"])
 def leds():
     """leds."""
+    global leds
     state = request.args["state"]
     if state == "on":
         leds.on()
