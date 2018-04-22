@@ -45,45 +45,40 @@ def components_data():
     if components is None:
         hosts_cache["hosts"] = get_all_components()
         components = hosts_cache["hosts"]
-    
-    return jsonify(components)
+    components_data_obj = {
+            "nodemcus":[], 
+            "sensehatpis": [], 
+            "enviropis": []
+            }
 
+    for host in components:
+        host_id = host["id"]
+        ip = host["ip"]
+        host_type = host["type"]
+        data = {"ip": ip, "id": host_id}
+        response = requests.get("http://{}/temperature".format(ip))
+        data["temperature"] = round(float(response.json()["temperature"]), 3)
+        if host_type in ["nodemcu", "sensehatpi"]:
+            response =requests.get("http://{}/humidity".format(ip))
+            data["humidity"] = round(float(response.json()["humidity"]), 3)
 
-@app.route("/temperature")
-def get_temperature():
-    ip = request.args.get("ip")
-    host_type = request.args.get("type")
-    response = requests.get("http://{}/temperature".format(ip))
+        if host_type in ["sensehatpi", "enviropi"]:
+            response = requests.get("http://{}/pressure".format(ip))
+            data["pressure"] = round(float(response.json()["pressure"]), 3)
 
-    data = response.json()
-    return jsonify(data)
+        if host_type == "enviropi":
+            response = requests.get("http://{}/humidity".format(ip))
+            data["light"] = response.json()["light"]
+            data["rgb"] = response.json()["rgb"]
+        
+        if host_type == "nodemcu":
+            components_data_obj["nodemcus"].append(data)
+        elif host_type == "sensehatpi":
+            components_data_obj["sensehatpis"].append(data)
+        elif host_type == "enviropi":
+            components_data_obj["enviropis"].append(data)
 
-
-@app.route("/humidity")
-def get_humidity():
-    ip = request.args.get("ip")
-    host_type = request.args.get("type")
-    response = requests.get("http://{}/humidity".format(ip))
-    data = response.json()
-    return jsonify(data)
-
-
-@app.route("/pressure")
-def get_pressure():
-    ip = request.args.get("ip")
-    host_type = request.args.get("type")
-    response = requests.get("http://{}/pressure".format(ip))
-    data = response.json()
-    return jsonify(data)
-
-
-@app.route("/light")
-def get_light():
-    ip = request.args.get("ip")
-    host_type = request.args.get("type")
-    response = requests.get("http://{}/light".format(ip))
-    data = response.json()
-    return jsonify(data)
+    return jsonify(components_data_obj)
 
 
 @app.route('/favicon.ico')
