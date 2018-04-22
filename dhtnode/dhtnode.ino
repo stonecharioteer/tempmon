@@ -48,8 +48,6 @@ void loop() {
     client.println("");
     client.print("{\"temperature\":");
     client.print(temp);
-    client.print(", \"humidity\":");
-    client.print(humidity);
     client.print("}");
   }
   else if (req.index("/humidity") != -1 ) {
