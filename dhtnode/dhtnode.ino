@@ -50,7 +50,7 @@ void loop() {
     client.print(temp);
     client.print("}");
   }
-  else if (req.index("/humidity") != -1 ) {
+  else if (req.indexOf("/humidity") != -1 ) {
     float humidity = dht.getHumidity();
     client.println("HTTP/1.1 200 OK");
     client.println("Content-Type: text/json");
@@ -70,6 +70,12 @@ void loop() {
     client.print("}");
   }
   else {
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/json");
+    client.println("");
+    client.print("{\"message\":");
+    client.print("\"Unrecognized query\"");
+    client.print("}");
     client.stop();
     return;
   }
