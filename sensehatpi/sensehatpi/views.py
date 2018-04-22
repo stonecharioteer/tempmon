@@ -9,7 +9,7 @@ from .sensehatpi import app
 hat = SenseHat()
 
 # API
-@app.route("/whoami"):
+@app.route("/whoami")
 def whoami():
     """Returns the identity of the chip it's running on."""
     data = {
