@@ -38,10 +38,10 @@
                             <b-tag type="is-warning">{{ '{{ host.id }}' }}</b-tag>
                             <b-tag type="is-danger">
                                 <i class="fa fa-thermometer-full fa-fw"></i>{{ '{{ host.temperature }}' }} °C</b-tag>
-                            <b-tag type="is-link">
-                                <i class="fa fa-cloud fa-fw"></i>{{ '{{ host.light }}' }} </b-tag>
-                            <b-tag type="is-link">
-                                <i class="fa fa-cloud fa-fw"></i>{{ '{{ host.rgb }}' }}</b-tag>
+                            <b-tag type="is-primary">
+                                <i class="fa fa-lightbulb-o fa-fw"></i>{{ '{{ host.light }}' }} </b-tag>
+                            <b-tag type="is-dark">
+                                <i class="fa fa-sun-o fa-fw"></i>{{ '{{ host.rgb }}' }}</b-tag>
                             <b-tag type="is-success">{{ '{{ host.pressure }}' }} millibar</b-tag>
                         </b-taglist>
                     </div>
@@ -76,7 +76,7 @@
             }
         },
         beforeMount() {
-            this.loadAsyncData()
+            this.loadAsyncData();
         }
     }
     const app = new Vue(configuration);
