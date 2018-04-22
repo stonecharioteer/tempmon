@@ -30,15 +30,17 @@ def get_all_components():
     for host in hosts:
         ip = host[0]
         hostname = host[1]
-        who_request = requests.get("http://{}/whoami".format(host))
-        # check if response is valid.
-        # If it is, then read the response and identify the host.
-        if who_request == 200:
-            response = who_request.json()
-            host_type = response["type"]
-            host_id = response["id"]
-            tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
- 
+        try:
+            who_request = requests.get("http://{}/whoami".format(host))
+            # check if response is valid.
+            # If it is, then read the response and identify the host.
+            if who_request == 200:
+                response = who_request.json()
+                host_type = response["type"]
+                host_id = response["id"]
+                tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
+        except requests.exceptions.ConnectionError:
+            pass
     return tempmon_hosts
 
 if __name__ == "__main__":
