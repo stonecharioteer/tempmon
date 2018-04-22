@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+from __future__ import print_function, division
 import os
 import nmap
 
@@ -37,3 +39,6 @@ def get_all_components():
             tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
  
     return tempmon_hosts
+
+if __name__ == "__main__":
+    print(get_all_components())
