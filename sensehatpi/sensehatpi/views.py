@@ -1,5 +1,6 @@
 from __future__ import division
 
+import os
 from flask import jsonify, request
 
 from sense_hat import SenseHat
@@ -13,7 +14,7 @@ hat = SenseHat()
 def whoami():
     """Returns the identity of the chip it's running on."""
     data = {
-        "id": "IDHERE",
+        "id": os.environ["SENSEHATID"],
         "type": "sensehatpi"
     }
     return jsonify(data)
