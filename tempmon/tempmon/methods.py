@@ -25,7 +25,7 @@ def get_all_components():
     #TODO: Figure out a different way to get the current domain IP prefix.
     # scanner.scan(hosts="192.168.1.0/24", arguments="-sn")
     # hosts = [(x, scanner[x]["hostnames"][0]["name"]) for x in scanner.all_hosts()]
-    hosts = [ ("192.168.1.{}".format(x), "component") for x in range(1, 256) ]
+    hosts = [ ("192.168.1.{}".format(x), "component") for x in range(66, 72) ] + [("192.168.1.4", "component")]
     # After identifying all hosts on network, identify valid ones.
     tempmon_hosts = []
     for host in hosts:
@@ -33,7 +33,7 @@ def get_all_components():
         hostname = host[1]
         # print("Scanning {}".format(ip))
         try:
-            who_request = requests.get("http://{}/whoami".format(ip), timeout=0.1)
+            who_request = requests.get("http://{}/whoami".format(ip), timeout=5)
             # check if response is valid.
             # If it is, then read the response and identify the host.
             if who_request.status_code == 200:
@@ -44,11 +44,16 @@ def get_all_components():
                     tempmon_hosts.append({"ip": ip, "type": host_type, "id": host_id})
                     print("Detected: {} {} {}".format(ip, host_type, host_id))
                 except ValueError:
-                    pass
+                    print("Invalid json. {}".format(who_request.text()))
+                except:
+                    raise
             else:
                 print("{} : {}".format(ip, who_request.status_code))
                 print("{} : {}".format(ip, who_request.reason))
                 print("{} : {}".format(ip, who_request.text))
         except requests.exceptions.RequestException:
+            print("No tempmon service running on {}".format(host[0]))
             pass
+        except:
+            raise
     return tempmon_hosts
