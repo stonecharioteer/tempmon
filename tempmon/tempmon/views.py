@@ -39,12 +39,6 @@ def enviropi():
 def admin():
     return render_template("admin.html")
 
-@app.route("/update")
-def update_hosts():
-    hosts_cache
-    hosts_cache["hosts"] = get_all_components()
-    return redirect("/")
-
 @app.route("/components_data")
 def components_data():
     # global hosts_cache
@@ -78,12 +72,31 @@ def components_data():
             data["light"] = record.light
             data["rgb"] = [int(x) for x in record.rgb.split(",")]
         
+        found = False
         if host_type == "nodemcu":
-            components_data_obj["nodemcus"].append(data)
+            for row in components_data_obj["nodemcus"]:
+                if row["host_id"] == host_id:
+                    found=True
+                    row = data
+                    break
+            if not found:
+                components_data_obj["nodemcus"].append(data)
         elif host_type == "sensehatpi":
-            components_data_obj["sensehatpis"].append(data)
+            for row in components_data_obj["sensehatpis"]:
+                if row["host_id"] == host_id:
+                    found=True
+                    row = data
+                    break
+            if not found:
+                components_data_obj["sensehatpis"].append(data)
         elif host_type == "enviropi":
-            components_data_obj["enviropis"].append(data)
+            for row in components_data_obj["enviropis"]:
+                if row["host_id"] == host_id:
+                    found=True
+                    row = data
+                    break
+            if not found:
+                components_data_obj["enviropis"].append(data)
 
     return jsonify(components_data_obj)
 
