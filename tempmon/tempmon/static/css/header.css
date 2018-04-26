@@ -4,5 +4,5 @@
     background-color: #BBDEFB;
     background-image: url("/static/img/absurdity.png"); 
     */
-    background: linear-gradient(0.5turn, rgb(255,255,255), rgb(255,255,255) 29%, rgb(242, 242, 242), rgb(242, 242, 242) 0%);
+    background: linear-gradient(0.5turn, rgb(255,255,255), rgb(255,255,255) 19%, rgb(242, 242, 242), rgb(242, 242, 242) 0%);
 }
