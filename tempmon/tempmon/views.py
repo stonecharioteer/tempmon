@@ -63,7 +63,6 @@ def components_data():
             "temperature" : record.temperature,
             "timestamp": record.timestamp
             }
-        print(type(data["timestamp"]))
         if host_type in ["nodemcu", "sensehatpi"]:
             data["humidity"] = record.humidity
         
