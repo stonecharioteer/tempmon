@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import datetime
-from flask_sqlalchemy impoort SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from .tempmon import app
 
 db = SQLAlchemy(app)
