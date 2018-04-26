@@ -75,7 +75,7 @@ def components_data():
         found = False
         if host_type == "nodemcu":
             for row in components_data_obj["nodemcus"]:
-                if row["host_id"] == host_id:
+                if row["id"] == host_id:
                     found=True
                     row = data
                     break
@@ -83,7 +83,7 @@ def components_data():
                 components_data_obj["nodemcus"].append(data)
         elif host_type == "sensehatpi":
             for row in components_data_obj["sensehatpis"]:
-                if row["host_id"] == host_id:
+                if row["id"] == host_id:
                     found=True
                     row = data
                     break
@@ -91,7 +91,7 @@ def components_data():
                 components_data_obj["sensehatpis"].append(data)
         elif host_type == "enviropi":
             for row in components_data_obj["enviropis"]:
-                if row["host_id"] == host_id:
+                if row["id"] == host_id:
                     found=True
                     row = data
                     break
