@@ -40,7 +40,7 @@
                                 <i class="fa fa-thermometer-full fa-fw"></i>{{ '{{ host.temperature }}' }} °C</b-tag>
                             <b-tag type="is-white">
                                 <i class="fa fa-lightbulb-o fa-fw"></i>{{ '{{ host.light }}' }} </b-tag>
-                            <b-tag style="background-color: rgb({{ ' {{ host.rgb[0] }}' }}, {{ ' {{ host.rgb[1] }}' }}, {{ ' {{ host.rgb[2] }}' }})">
+                            <b-tag type="is-white is-rgb">
                                 <i class="fa fa-sun-o fa-fw"></i>{{ '{{ host.rgb }}' }}</b-tag>
                             <b-tag type="is-success">{{ '{{ host.pressure }}' }} millibar</b-tag>
                         </b-taglist>
