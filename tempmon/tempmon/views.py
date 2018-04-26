@@ -66,7 +66,7 @@ def components_data():
         data = {
             "id": host_id, 
             "ip": host_ip,
-            "temperature" = record.temperature
+            "temperature" : record.temperature
             }
         if host_type in ["nodemcu", "sensehatpi"]:
             data["humidity"] = record.humidity
