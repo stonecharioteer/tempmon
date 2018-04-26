@@ -26,7 +26,7 @@ class Record(Base):
 
 Base.metadata.create_all(engine)
 
-hosts = [("192.168.1.{}".format(x), "component") for x in range(65, 73)] + [("192.168.1.4", "component")]
+hosts = [("192.168.1.{}".format(x), "component") for x in range(0, 256)]# + [("192.168.1.4", "component")]
 
 # After identifying all hosts on network, identify valid ones.
 tempmon_hosts = []
@@ -36,7 +36,7 @@ for host in hosts:
     # print("Scanning {}".format(ip))
     try:
         who_request = requests.get(
-            "http://{}/whoami".format(ip), timeout=3)
+            "http://{}/whoami".format(ip), timeout=0.3)
         # check if response is valid.
         # If it is, then read the response and identify the host.
         if who_request.status_code == 200:
