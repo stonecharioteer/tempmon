@@ -60,8 +60,10 @@ def components_data():
         data = {
             "id": host_id, 
             "ip": host_ip,
-            "temperature" : record.temperature
+            "temperature" : record.temperature,
+            "timestamp": record.timestamp
             }
+        print(type(data["timestamp"]))
         if host_type in ["nodemcu", "sensehatpi"]:
             data["humidity"] = record.humidity
         
@@ -71,29 +73,39 @@ def components_data():
         if host_type == "enviropi":
             data["light"] = record.light
             data["rgb"] = [int(x) for x in record.rgb.split(",")]
+
         
         found = False
         if host_type == "nodemcu":
             for row in components_data_obj["nodemcus"]:
-                if row["id"] == host_id:
-                    found=True
-                    row = data
+                if row["id"] == host_id and row["timestamp"] <= data["timestamp"]:
+                    found = True
+                    row["timestamp"] = data["timestamp"]
+                    row["temperature"] = data["temperature"]
+                    row["humidity"] = data["humidity"]
                     break
             if not found:
                 components_data_obj["nodemcus"].append(data)
         elif host_type == "sensehatpi":
             for row in components_data_obj["sensehatpis"]:
-                if row["id"] == host_id:
+                if row["id"] == host_id and row["timestamp"] <= data["timestamp"]:
                     found=True
-                    row = data
+                    row["timestamp"] = data["timestamp"]
+                    row["temperature"] = data["temperature"]
+                    row["humidity"] = data["humidity"]
+                    row["pressure"] = data["pressure"]
                     break
             if not found:
                 components_data_obj["sensehatpis"].append(data)
         elif host_type == "enviropi":
             for row in components_data_obj["enviropis"]:
-                if row["id"] == host_id:
-                    found=True
-                    row = data
+                if row["id"] == host_id and row["timestamp"] <= data["timestamp"]:
+                    found = True
+                    row["timestamp"] = data["timestamp"]
+                    row["temperature"] = data["temperature"]
+                    row["pressure"] = data["pressure"]
+                    row["light"] = data["light"]
+                    row["rgb"] = data["rgb"]
                     break
             if not found:
                 components_data_obj["enviropis"].append(data)
