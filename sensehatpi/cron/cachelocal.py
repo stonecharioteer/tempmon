@@ -30,16 +30,17 @@ def summarize():
     import pandas as pd
     import sqlite3
     import datetime
-
+    import logging 
+    logging.basicConfig(format="%(message)s", level=logging.INFO)
     global sqlite_file
-    
+        
     with sqlite3.connect(sqlite_file) as con:
         df = pd.read_sql("SELECT * from records", con)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
 
     last_day = (datetime.datetime.now() - datetime.timedelta(minutes=24*60))
     df_one_day = df.loc[df["timestamp"] >= last_day]
-    print(df_one_day.describe())
+    logging.info(df_one_day.describe())
 
 
 def detect_increase():
