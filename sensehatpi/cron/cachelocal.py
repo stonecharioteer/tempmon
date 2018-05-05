@@ -26,6 +26,22 @@ class Record(Base):
 Base.metadata.create_all(engine)
 
 
+def summarize():
+    import pandas as pd
+    import sqlite3
+    import datetime
+
+    global sqlite_file
+    
+    with sqlite3.connect(sqlite_file) as con:
+        df = pd.read_sql("SELECT * from records", con)
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+    last_day = (datetime.datetime.now() - datetime.timedelta(minutes=24*60))
+    df_one_day = df.loc[df["timestamp"] >= last_day]
+    print(df_one_day.describe())
+
+
 def detect_increase():
     import pandas as pd
     import sqlite3
@@ -86,11 +102,16 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-c","--check_humidity_change", action="store_true")
+    parser.add_argument("-s","--summary",action="store_true")
     args = parser.parse_args()
-    if not args.check_humidity_change:
-        record_sensors()
+    if not args.summary:
+        if not args.check_humidity_change:
+            record_sensors()
+        else:
+            detect_increase()
     else:
-        detect_increase()
+        summarize()
+    
 
 
     record_sensors()
