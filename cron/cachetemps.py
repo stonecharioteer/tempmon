@@ -5,6 +5,8 @@ from sqlalchemy.orm import sessionmaker
 import datetime
 import requests
 import os
+import json
+
 sqllite_file = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), "tempcache.db")
 uri = "sqlite:///" + sqllite_file
@@ -26,7 +28,7 @@ class Record(Base):
 
 Base.metadata.create_all(engine)
 
-hosts = [("192.168.1.{}".format(x), "component") for x in range(0, 256)]# + [("192.168.1.4", "component")]
+hosts = [("192.168.1.{}".format(x), "component") for x in range(100, 256)]# + [("192.168.1.4", "component")]
 
 # After identifying all hosts on network, identify valid ones.
 tempmon_hosts = []
@@ -43,12 +45,15 @@ for host in hosts:
             try:
                 response = who_request.json()
                 host_type = response["type"]
-                host_id = response["id"]
+                if host_type == "nodemcu":
+                    host_id = response["name"]
+                else:
+                    host_id = response["id"]
                 tempmon_hosts.append(
                     {"ip": ip, "type": host_type, "id": host_id})
                 print("Detected: {} {} {}".format(ip, host_type, host_id))
             except ValueError:
-                print("Invalid json. {}".format(who_request.text()))
+                print("Invalid json. {}".format(who_request.text))
             except:
                 raise
         else:
@@ -68,9 +73,14 @@ for host in tempmon_hosts:
     host_id = host["id"]
     ip = host["ip"]
     host_type = host["type"]
-    response = requests.get("http://{}/temperature".format(ip))
-    temperature = round(float(response.json()["temperature"]), 3)
-    if host_type in ["nodemcu", "sensehatpi"]:
+
+    if host_type == "nodemcu":
+        response = requests.get("http://{}/measure/3".format(ip))
+        temperature = round(float(response.json()["temperature"]), 3)
+        humidity = round(float(response.json()["humidity"]), 3)
+
+
+    if host_type in ["sensehatpi"]:
         response = requests.get("http://{}/humidity".format(ip))
         humidity = round(float(response.json()["humidity"]), 3)
 
